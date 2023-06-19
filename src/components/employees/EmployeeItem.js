@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 
 export const ItemForm = () => {
-    const [feedback, setFeedback] = useState("")
+   const navigate = useNavigate()
    
     /*
         TODO: Add the correct default properties to the
@@ -11,53 +12,52 @@ export const ItemForm = () => {
    const [item, update] = useState({
         name: "",
         price: 0,
-        categoryId: 0
+        categoryId: ""
+   })
+   const[categories, setCategories] = useState([]);
+
+   useEffect(() => {
+    fetch("http://localhost:8088/category")
+    .then(response => response.json())
+    .then(data => setCategories(data));
+   },
+   []);
+
+  
+
+   const handleSaveButtonClick = (event) => {
+    event.preventDefault()
+   
+    const categoryIdInt = parseInt(item.categoryId, 10);
+
+   // TODO: Create the object to be saved to the API
+   const ticketToSendToAPI = {
+        name: item.name,
+        price: item.price,
+        categoryId: categoryIdInt || null
+
+   }
+    // TODO: Perform the fetch() to POST the object to the API
+
+   return fetch(`http://localhost:8088/items`, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(ticketToSendToAPI)
+   })
+   .then(response => response.json())
+   .then(() => {
+    navigate("/food")
    })
 
-   const localSpiderUser = localStorage.getItem("spider_user")
-   const spiderUserObject = JSON.parse(localSpiderUser)
 
-   // TODO: Get item info from API and update state
-   useEffect(() => {
-    fetch(`http://localhost:8088/items?categoryId=${spiderUserObject.id}`)
-    .then(response => response.json())
-    .then((data) => {
-        const itemObject = data[0]
-        updateProfile(itemObject)
-    })
-   },
-   []
-   )
-   useEffect(() => {
-    if (feedback !== "") {
-        // Clear feedback to make entire element disappear after 3 seconds
-        setTimeout(() => setFeedback(""), 3000);
-    }
-}, [feedback])
-
-const handleSaveButtonClick = (event) => {
-    event.preventDefault()
-     /*
-            TODO: Perform the PUT fetch() call here to update the profile.
-            Navigate user to home page when done.
-        */
-       return fetch(`http://localhost:8088/items/${item.id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(profile)
-       })
-       .then(response => response.json())
-       .then(() => {
-        setFeedback("customer profile successfully saved")
-       })
-}
+   }
 
 return (
 
-    <form className="newItem">
-        <h2 className="newItem__title">New Item</h2>
+    <form className="foodForm">
+        <h2 className="foodForm__title">New Item</h2>
         <fieldset>
             <div className="form-group">
                 <label htmlFor="name">Name:</label>
@@ -70,7 +70,7 @@ return (
                     (evt) => {
                         const copy = {...item}
                         copy.name =evt.target.value
-                        updateProfile(copy)
+                        update(copy)
 
                     }
                 } />
@@ -85,20 +85,39 @@ return (
                 onChange={
                     (evt) => {
                         const copy = {...item}
-                        copy.price = parseFloat(evt.target.value, 2)
-                        updateProfile(copy)
+                        copy.price = parseFloat(evt.target.value)
+                        update(copy)
                     }
                 } />
+            </div>
+        </fieldset>
+        <fieldset>
+            <div className="form-group">
+                <label htmlFor="category">Category</label>
+                <select
+                className="form-control"
+                value={item.categoryId}
+                onChange={
+                    (evt) => {
+                        const copy = {...item}
+                        copy.categoryId = parseFloat(evt.target.value, 10)
+                        update(copy)
+                    }
+                } >
+                <option value="">Select a category</option>
+                {categories.map(category => (
+                    <option key={category.id} value={category.id}>
+                        {category.type}
+                    </option>
+                ))}
+                </select>
             </div>
         </fieldset>
         <button
                 onClick={(clickEvent) => handleSaveButtonClick(clickEvent)}
                 className="btn btn-primary">
-                Save Profile
+                Save Item
             </button>
-            <div className={`${feedback.includes("Error") ? "error" : "feedback"} ${feedback === "" ? "invisible" : "visible"}`}>
-    {feedback}
-</div>
     </form>
 )
 }

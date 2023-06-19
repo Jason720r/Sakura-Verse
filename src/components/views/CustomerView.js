@@ -1,24 +1,23 @@
 import { Outlet, Route, Routes } from "react-router-dom"
-import { ItemsList } from "../orders/Orders.js"
+
+import { Home } from "../nav/HomeNav.js"
+import { ItemContainer } from "../items/ItemContainer.js"
+
 
 
 
 
 export const CustomerViews = () => {
+   
+
 	return (
         <Routes>
-            <Route path="/" element={
-                <>
-                    <h1>Sakura-Verse</h1>
-                    <div>Welcome to the Omni-Dimensional Japanese Super Duper Spider Delivery Service!</div>
-
-                    <Outlet />
-                </>
-            }>
-                <Route path="items" element={< ItemsList />}/>
+            <Route path="/" element={<Home />} />
+                <Route path="items" element={< ItemContainer />}
+                />
 
                
-            </Route>
+            
         </Routes>
     )
 }

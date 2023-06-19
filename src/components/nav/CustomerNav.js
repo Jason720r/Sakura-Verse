@@ -7,8 +7,11 @@ export const CustomerNav = () => {
     return (
         <ul className="navbar">
             <li className="navbar__item active">
-                <Link className="navbar__link" to="/items">Order</Link>
+                <Link className="navbar__link" to="/items"> Order</Link>
             </li>
+            { <li className="navbar__item active">
+                <Link className="navbar__link" to="/">Home</Link>
+            </li> }
             {
                 localStorage.getItem("spider_user")
                     ? <li className="navbar__item navbar__logout">
