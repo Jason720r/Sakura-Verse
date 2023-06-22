@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 
 
 
- export const calculateTotalPrice = (confirmedOrders, items) => {
+  export const calculateTotalPrice =   (confirmedOrders, items) => {
  
 
     let totalPrice = 0;

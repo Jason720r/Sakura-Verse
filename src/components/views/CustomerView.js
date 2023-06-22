@@ -1,6 +1,6 @@
 import { Outlet, Route, Routes } from "react-router-dom"
 
-import { Home } from "../nav/HomeNav.js"
+import { Home } from "../nav/CustomerHomeNav.js"
 import { ItemContainer } from "../items/ItemContainer.js"
 
 

@@ -113,12 +113,31 @@ export const ItemsList = ({ searchTermState }) => {
     }
   }, [selectedCategoryId, items]);
 
+// const deleteItem = (index) => {
+//     setConfirmedOrders((prevOrderItems) => {
+//         const updatedOrderItems = [...prevOrderItems];
+//         updatedOrderItems.splice(index, 1);
+//         return updatedOrderItems;
+//     });
+
+    
+
+//     const totalPrice = calculateTotalPrice(tempOrderItems, items)
+//     setTotalPrice(totalPrice);
+// }
 
 //This defines the confirmOrder function that adds the currentOrder to the confirmedOrders state, clears the currentOrder, and calculates the total price using the calculateTotalPrice function. 
 //It updates the totalPrice state with the calculated value.
 const confirmOrder = () => {
-    setConfirmedOrders((prevOrders) => [...prevOrders, ...tempOrderItems])
-    setCurrentOrder([]);
+    //Get the unique items from tempOrderItems based on itemId
+    const uniqueItems = tempOrderItems.filter(
+        (item, index, self) => self.findIndex((i) => i.itemId === item.itemId) === index
+    )
+
+    // setConfirmedOrders((prevOrders) => [...prevOrders, ...uniqueItems])
+    setConfirmedOrders([])
+    setCurrentOrder([])
+    setTempOrderItems([]);
   }
 
 
@@ -133,15 +152,15 @@ useEffect(() => {
         setConfirmedOrders(data);
     })
     .catch((error) => {
-        console.log("Error retrieving confirmed orders:". error);
+        console.log("Error retrieving confirmed orders:", error);
     })
 }, [spiderUserObject.id])
 
 
 useEffect(() => {
-    const totalPrice = calculateTotalPrice(confirmedOrders, items);
+    const totalPrice = calculateTotalPrice(tempOrderItems, items);
     setTotalPrice(totalPrice)
-}, [confirmedOrders, items])
+}, [tempOrderItems, items])
 
 
 //This useEffect hook updates the totalPrice state by calling the calculateTotalPrice function 
@@ -182,6 +201,8 @@ useEffect(() => {
                         <button onClick={placeOrder}>Add to Order</button>
                     </div><div className="current-order">
                             <h2>Current Order:</h2>
+                            {tempOrderItems.length > 0 && (
+                                <>
                             {tempOrderItems.map((orderItem, index) => {
                                 const item =items.find((item) => item.id === orderItem.itemId)
                                 return (
@@ -189,19 +210,22 @@ useEffect(() => {
                                     <p>Item: {item.name}</p>
                                     <p>Quantity: {orderItem.quantity}</p>
                                     <p>${item.price * orderItem.quantity.toFixed(2)}</p>
-                                   
+                                    {/* <button onClick={() => deleteItem(index)}>Remove</button>  */}
                                 </div>
                                 )
                                 
                             })}
-                            {confirmedOrders.map((orderItem) => {
+                            </>
+                            )}
+                            {confirmedOrders.map((orderItem, index) => {
   const item = items.find((item) => item.id === orderItem.itemId);
   const totalPrice = (item.price * orderItem.quantity).toFixed(2);
   return (
     <div key={orderItem.id}>
       <p>Item: {item.name}</p>
-      <p>Quantity: {orderItem.quantity}</p>
+      <p>Quantity: {orderItem.quantity}</p> 
       <p> ${totalPrice}</p>
+      {/* <button onClick={() => deleteItem(index)}>Remove</button> */}
     </div>
   );
 })}
