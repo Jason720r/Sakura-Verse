@@ -17,6 +17,7 @@ export const ItemsList = ({ searchTermState }) => {
   const [confirmedOrders, setConfirmedOrders] = useState([])
   const [totalPrice, setTotalPrice] = useState(0)
   const [tempOrderItems, setTempOrderItems] = useState([])
+  const [order, setOrder] = useState({})
   const navigate = useNavigate();
 
   //These lines retrieve the spider_user item from the browser's local storage and parse it as a JSON object. 
@@ -67,10 +68,13 @@ export const ItemsList = ({ searchTermState }) => {
       itemId: selectedItem.id,
       quantity: quantity,
       userId: spiderUserObject.id,
+      note: "",
+      //add isCompleted property for confirmed orders
     };
     setTempOrderItems((prevOrderItems) => [...prevOrderItems, order]);
     setSelectedItem(null);
     setQuantity(1)
+    
    
     };
 
@@ -113,29 +117,16 @@ export const ItemsList = ({ searchTermState }) => {
     }
   }, [selectedCategoryId, items]);
 
-// const deleteItem = (index) => {
-//     setConfirmedOrders((prevOrderItems) => {
-//         const updatedOrderItems = [...prevOrderItems];
-//         updatedOrderItems.splice(index, 1);
-//         return updatedOrderItems;
-//     });
 
     
 
-//     const totalPrice = calculateTotalPrice(tempOrderItems, items)
-//     setTotalPrice(totalPrice);
-// }
+
 
 //This defines the confirmOrder function that adds the currentOrder to the confirmedOrders state, clears the currentOrder, and calculates the total price using the calculateTotalPrice function. 
 //It updates the totalPrice state with the calculated value.
 const confirmOrder = () => {
-    //Get the unique items from tempOrderItems based on itemId
-    const uniqueItems = tempOrderItems.filter(
-        (item, index, self) => self.findIndex((i) => i.itemId === item.itemId) === index
-    )
-
-    // setConfirmedOrders((prevOrders) => [...prevOrders, ...uniqueItems])
-    setConfirmedOrders([])
+    
+    setConfirmedOrders(() => [])
     setCurrentOrder([])
     setTempOrderItems([]);
   }
@@ -198,6 +189,13 @@ useEffect(() => {
                             min="1"
                             value={quantity}
                             onChange={(event) => setQuantity(parseInt(event.target.value))} />
+                            <label htmlFor={`note-${item.id}`}>Note:</label>
+                            <input 
+                            type="text"
+                            id={`note-${item.id}`}
+                            value={order.note}
+                            onChange={(event) => setOrder((prevOrder) => ({ ...prevOrder, note: event.target.value}))} //Update the note property in the order state
+                            />
                         <button onClick={placeOrder}>Add to Order</button>
                     </div><div className="current-order">
                             <h2>Current Order:</h2>
@@ -205,12 +203,14 @@ useEffect(() => {
                                 <>
                             {tempOrderItems.map((orderItem, index) => {
                                 const item =items.find((item) => item.id === orderItem.itemId)
+              
                                 return (
                                 <div key={index}>
                                     <p>Item: {item.name}</p>
                                     <p>Quantity: {orderItem.quantity}</p>
                                     <p>${item.price * orderItem.quantity.toFixed(2)}</p>
-                                    {/* <button onClick={() => deleteItem(index)}>Remove</button>  */}
+                                    <p>Note: {order.note}</p>
+                                   
                                 </div>
                                 )
                                 
@@ -225,6 +225,7 @@ useEffect(() => {
       <p>Item: {item.name}</p>
       <p>Quantity: {orderItem.quantity}</p> 
       <p> ${totalPrice}</p>
+      <p>Note: {order.note}</p>
       {/* <button onClick={() => deleteItem(index)}>Remove</button> */}
     </div>
   );
