@@ -2,23 +2,12 @@ import React, { useEffect, useState } from "react";
 
 export const ItemDelete = () => {
     const [items, setItems] = useState([]);
-    const [price, updatePrice] = useState({
-      name: "",
-      price: 0,
-      categoryId: 0
-    })
+
 
     const localSpiderUser = localStorage.getItem("spider_user");
     const spiderUserObject = JSON.parse(localSpiderUser);
 
-    useEffect(() => {
-      fetch(`http://localhost:8088/items?categoryId=${spiderUserObject.id}`)
-      .then(response => response.json())
-      .then((data) => {
-        const itemObject = data[0]
-        updatePrice(itemObject)
-      })
-    })
+   
 
     useEffect(() => {
 

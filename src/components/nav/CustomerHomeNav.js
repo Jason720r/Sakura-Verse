@@ -52,7 +52,8 @@ const toggleOrder = (orderId) => {
         
         <div className="order-container" onClick={() => toggleOrder("all")}>
           <div className="order-header">
-            <h3>Your Current Order</h3>
+            <h3>Ongoing Order [expand/minimize] </h3>
+            
           </div>
           {expandedOrders.includes("all") && (
             <div className="order-details">
@@ -62,13 +63,14 @@ const toggleOrder = (orderId) => {
                 return (
                   <div key={order.id}>
                     
-                    <p> {item.name}</p>
+                    <p> <strong>{item.name}</strong></p>
                     <p>Quantity: {order.quantity}</p>
                     <p>Note: {order.note}</p>
                     <p>${calculateTotalPrice([order], [item])}</p>
                   </div>
                 );
               })}
+              <p>Total Price: ${calculateTotalPrice(orders, items)}</p>
             </div>
           )}
         </div>
