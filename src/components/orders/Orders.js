@@ -18,7 +18,7 @@ export const ItemsList = ({ searchTermState }) => {
   const [totalPrice, setTotalPrice] = useState(0)
   const [tempOrderItems, setTempOrderItems] = useState([])
   const [order, setOrder] = useState({})
-  const navigate = useNavigate();
+
 
   //These lines retrieve the spider_user item from the browser's local storage and parse it as a JSON object. 
   //The user object is stored in spiderUserObject
@@ -69,6 +69,7 @@ export const ItemsList = ({ searchTermState }) => {
       quantity: quantity,
       userId: spiderUserObject.id,
       note: "",
+      isCompleted: false
       //add isCompleted property for confirmed orders
     };
     setTempOrderItems((prevOrderItems) => [...prevOrderItems, order]);
@@ -235,7 +236,7 @@ useEffect(() => {
             )}
           </div>
         ))}
-        <p>Total Price: ${totalPrice}</p> {/* Display the total price */}
+        <p><strong>Total Price: ${totalPrice}</strong></p> {/* Display the total price */}
       <button onClick={confirmOrder}>Confirm Order</button>
       </div>
     </>

@@ -70,7 +70,7 @@ const toggleOrder = (orderId) => {
                   </div>
                 );
               })}
-              <p>Total Price: ${calculateTotalPrice(orders, items)}</p>
+              <p><strong>Total Price: ${calculateTotalPrice(orders, items)}</strong></p>
             </div>
           )}
         </div>

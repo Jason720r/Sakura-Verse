@@ -1,75 +1,120 @@
-//In this module I will allow employees to view orders that customers have placed
-//they should be able to confirm the orders,
 import { useEffect, useState } from "react";
 import { calculateTotalPrice } from "../orders/OrderPrice";
 
-
-
-
-
-
 export const CustomerOrder = () => {
- const [orders, setOrders] = useState([])
- const [items, setItems] = useState([])
- const [expandedOrders, setExpandedOrders] = useState([])
- const itemURL = `http://localhost:8088/items`
+  const [orders, setOrders] = useState([]);
+  const [items, setItems] = useState([]);
+  const [expandedOrders, setExpandedOrders] = useState([]);
+  const [confirmedOrders, setConfirmedOrders] = useState([]);
+  const itemURL = `http://localhost:8088/items`;
 
- useEffect(
-    () => {
-        fetch(`http://localhost:8088/orders`)
-        .then(response => response.json())
-        .then((orderArray) => {
-            setOrders(orderArray)
-        })
-    }, []
- )
+  const localSpiderUser = localStorage.getItem("spider_user");
+  const spiderUserObject = JSON.parse(localSpiderUser);
 
- useEffect(() => {
-    //Fetch item details for each order
-    // const orderDetailsPromises = orders.map((order) => 
+  useEffect(() => {
+    fetch(`http://localhost:8088/orders`)
+      .then((response) => response.json())
+      .then((orderArray) => {
+        setOrders(orderArray);
+      });
+  }, []);
+
+  useEffect(() => {
     fetch(`${itemURL}`)
-    .then((response) => response.json())
-    .then((itemArray) => {
-        setItems(itemArray)
-    }
-    )
-}, [])
-const toggleOrder = (orderId) => {
-    if (expandedOrders.includes(orderId)) {
-        setExpandedOrders(expandedOrders.filter((id) => id !== orderId))
-    } else {
-        setExpandedOrders([...expandedOrders, orderId])
-    }
-}
+      .then((response) => response.json())
+      .then((itemArray) => {
+        setItems(itemArray);
+      });
+  }, []);
 
-  
+  const toggleOrder = (orderId) => {
+    if (expandedOrders.includes(orderId)) {
+      setExpandedOrders(expandedOrders.filter((id) => id !== orderId));
+    } else {
+      setExpandedOrders([...expandedOrders, orderId]);
+    }
+  };
+
+  const confirmAllOrders = () => {
+    const updatedOrders = orders.map((order) => ({
+      ...order,
+      isCompleted: true,
+    }));
+
+    // Call the API to update orders
+    Promise.all(
+        updatedOrders.map((order) =>
+          fetch(`http://localhost:8088/orders/${order.id}`, {
+            method: "PUT", // or "PATCH" depending on your server's API
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(order),
+          })
+        )
+      )
+        .then(() => {
+          // Clear ongoing orders from the UI
+          setOrders([]);
+        })
+        .catch((error) => {
+          // Handle error
+          console.error("Error confirming orders:", error);
+        });
+    };
 
   return (
     <>
-    <h1>Customer Orders</h1>
-    <header>Work faster spider!</header>
-    
-    <div className="order-container" onClick={() => toggleOrder("all")}>
-      <div className="order-header">
-        <h3>Order #1</h3>
+      <h1>Sakura-Verse Employee-Page</h1>
+      <div>
+        Are you happy working tirelessly every day, barely scraping by and wishing YOU could find your dream job? Well, this isn't it, you clown.
       </div>
-      {expandedOrders.includes("all") && (
-        <div className="order-details">
-          {orders.map((order) => {
-            const item = items.find((item) => item.id === order.itemId) || {};
 
-            return (
-              <div key={order.id}>
-                
-                <p> {item.name}</p>
-                <p>Quantity: {order.quantity}</p>
-                <p>${calculateTotalPrice([order], [item])}</p>
-              </div>
-            );
-          })}
+      <div className="order-container" onClick={() => toggleOrder("all")}>
+        <div className="order-header">
+          <h3>Ongoing Customer Order [expand/minimize]</h3>
         </div>
-      )}
-    </div>
-  </>
-);
+        {expandedOrders.includes("all") && (
+          <div className="order-details">
+            {orders.map((order) => {
+              const item = items.find((item) => item.id === order.itemId) || {};
+
+              return (
+                <div key={order.id}>
+                  <p><strong>{item.name}</strong></p>
+                  <p>Quantity: {order.quantity}</p>
+                  <p>${calculateTotalPrice([order], [item])}</p>
+                </div>
+              );
+            })}
+            <p>Total Price: ${calculateTotalPrice(orders, items)}</p>
+          </div>
+        )}
+      </div>
+
+      <button onClick={confirmAllOrders}>Confirm All Orders</button>
+
+      <div className="confirmed-orders-container">
+        <h3>Confirmed Orders</h3>
+        {confirmedOrders.map((order) => {
+          const item = items.find((item) => item.id === order.itemId) || {};
+
+          return (
+            <div key={order.id}>
+              <p><strong>{item.name}</strong></p>
+              <p>Quantity: {order.quantity}</p>
+              <p>${calculateTotalPrice([order], [item])}</p>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
 };
+
+
+
+
+
+
+

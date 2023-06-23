@@ -41,7 +41,7 @@ export const ItemDelete = () => {
 
 
         <div>
-          <h2>Employee View</h2>
+          <h2>Item Editing</h2>
           <table>
             <thead>
               <tr>
