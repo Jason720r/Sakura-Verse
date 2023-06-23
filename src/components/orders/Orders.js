@@ -164,10 +164,10 @@ useEffect(() => {
 
   return (
     <>
-      <div className="category-buttons">
-        <button onClick={() => setSelectedCategoryId("")}> All items</button>
+      <div className="category-buttons ">
+        <button className="btn btn-dark-red"onClick={() => setSelectedCategoryId("")}> All items</button>
         {categories.map((category) => (
-          <button
+          <button className="btn btn-dark-red"
             key={category.id}
             onClick={() => setSelectedCategoryId(category.id)}
           >
@@ -176,23 +176,25 @@ useEffect(() => {
         ))}
       </div>
 
-      <div className="items">
+      <div className="items"  style={{ marginTop: '2rem' }}>
         {filteredItems.map((item) => (
-          <div className="item" key={item.id}>
-            <h4 onClick={() => { setSelectedItem(item); setPopupOpen(true); }}>
+          <div className="item  " key={item.id}>
+            <h4 onClick={() => { setSelectedItem(item); setPopupOpen(true); }}
+            className="custom-text"
+>
               {item.name}
             </h4>
-            <p>Price: {item.price}</p>
+            <p className="custom-smalltext">Price: {item.price}</p>
             {(isPopupOpen && selectedItem && selectedItem.id === item.id && selectedCategoryId === item.categoryId) && (
               <><div className="popup">
-                        <label htmlFor={`quantity-${item.id}`}>Quantity:</label>
+                        <label className="custom-description"htmlFor={`quantity-${item.id}`}>Quantity:</label>
                         <input
                             type="number"
                             id={`quantity-${item.id}`}
                             min="1"
                             value={quantity}
                             onChange={(event) => setQuantity(parseInt(event.target.value))} />
-                            <label htmlFor={`note-${item.id}`}>Note:</label>
+                            <label className="custom-description"htmlFor={`note-${item.id}`}>Note:</label>
                             <input 
                             type="text"
                             id={`note-${item.id}`}
@@ -201,7 +203,7 @@ useEffect(() => {
                             />
                         <button onClick={placeOrder}>Add to Order</button>
                     </div><div className="current-order">
-                            <h2>Current Order:</h2>
+                            <h2 className="custom-text" style={{ marginTop: '2rem' }} >Current Order:</h2>
                             {tempOrderItems.length > 0 && (
                                 <>
                             {tempOrderItems.map((orderItem, index) => {
@@ -209,8 +211,8 @@ useEffect(() => {
               
                                 return (
                                 <div key={index}>
-                                    <p>Item: {item.name}</p>
-                                    <p>Quantity: {orderItem.quantity}</p>
+                                    <p >Item: {item.name}</p>
+                                    <p >Quantity: {orderItem.quantity}</p>
                                     <p>${item.price * orderItem.quantity.toFixed(2)}</p>
                                     <p>Note: {order.note}</p>
                                    
@@ -225,10 +227,10 @@ useEffect(() => {
   const totalPrice = (item.price * orderItem.quantity).toFixed(2);
   return (
     <div key={orderItem.id}>
-      <p>Item: {item.name}</p>
-      <p>Quantity: {orderItem.quantity}</p> 
-      <p> ${totalPrice}</p>
-      <p>Note: {order.note}</p>
+      <p className="custom-description2">Item: {item.name}</p>
+      <p className="custom-description">Quantity: {orderItem.quantity}</p> 
+      <p className="custom-description"> ${totalPrice}</p>
+      <p className="custom-description">Note: {order.note}</p>
       {/* <button onClick={() => deleteItem(index)}>Remove</button> */}
     </div>
   );

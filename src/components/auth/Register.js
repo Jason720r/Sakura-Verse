@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "./Login.css"
 
-export const Register = (props) => {
+export const Register = () => {
     const [customer, setCustomer] = useState({
         email: "",
         name: "",
@@ -56,8 +56,8 @@ export const Register = (props) => {
 
     return (
         <main style={{ textAlign: "center" }}>
-            <form className="form--login" onSubmit={handleRegister}>
-                <h1 className="h3 mb-3 font-weight-normal">Please Register for the Sakura-Verse</h1>
+            <form className="form--login custom-form" onSubmit={handleRegister}>
+                <h1 className="h3 mb-3 font-weight-normal custom-heading">Please Register for the Sakura-Verse</h1>
                 <fieldset>
                     <label htmlFor="name"> Name </label>
                     <input onChange={updateCustomer}
@@ -86,7 +86,7 @@ export const Register = (props) => {
                     <label htmlFor="email"> Universe 616 </label>
                 </fieldset>
                 <fieldset>
-                    <button type="submit"> Register </button>
+                    <button type="submit" className="btn btn-dark-red"> Register </button>
                 </fieldset>
             </form>
         </main>
