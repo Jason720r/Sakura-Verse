@@ -15,7 +15,10 @@ export const CustomerOrder = () => {
     fetch(`http://localhost:8088/orders`)
       .then((response) => response.json())
       .then((orderArray) => {
-        setOrders(orderArray);
+        const ongoingOrders = orderArray.filter((order) => !order.isCompleted);
+        const confirmedOrders = orderArray.filter((order) => order.isCompleted);
+        setOrders(ongoingOrders);
+        setConfirmedOrders(confirmedOrders);
       });
   }, []);
 
@@ -53,15 +56,15 @@ export const CustomerOrder = () => {
           })
         )
       )
-        .then(() => {
-          // Clear ongoing orders from the UI
-          setOrders([]);
-        })
-        .catch((error) => {
-          // Handle error
-          console.error("Error confirming orders:", error);
-        });
-    };
+      .then(() => {
+        const newConfirmedOrders = [...confirmedOrders, ...orders];
+        setConfirmedOrders(newConfirmedOrders);
+        setOrders([]);
+      })
+      .catch((error) => {
+        console.error("Error confirming orders:", error);
+      });
+  };
 
   return (
     <>
@@ -71,43 +74,43 @@ export const CustomerOrder = () => {
       </div>
 
       <div className="order-container" onClick={() => toggleOrder("all")}>
-        <div className="order-header">
-          <h3>Ongoing Customer Order [expand/minimize]</h3>
-        </div>
-        {expandedOrders.includes("all") && (
-          <div className="order-details">
-            {orders.map((order) => {
-              const item = items.find((item) => item.id === order.itemId) || {};
+  <div className="order-header">
+    <h3>Ongoing Customer Orders [expand/minimize]</h3>
+  </div>
+  {expandedOrders.includes("all") && (
+    <div className="order-details">
+      {orders.map((order) => {
+        const item = items.find((item) => item.id === order.itemId) || {};
 
-              return (
-                <div key={order.id}>
-                  <p><strong>{item.name}</strong></p>
-                  <p>Quantity: {order.quantity}</p>
-                  <p>${calculateTotalPrice([order], [item])}</p>
-                </div>
-              );
-            })}
-            <p>Total Price: ${calculateTotalPrice(orders, items)}</p>
+        return (
+          <div key={order.id}>
+            <p><strong>{item.name}</strong></p>
+            <p>Quantity: {order.quantity}</p>
+            <p>${calculateTotalPrice([order], [item])}</p>
           </div>
-        )}
+        );
+      })}
+      <p>Total Price: ${calculateTotalPrice(orders, items)}</p>
+    </div>
+  )}
+</div>
+
+<button onClick={confirmAllOrders}>Confirm All Orders</button>
+
+<div className="confirmed-orders-container">
+  <h3>Confirmed Orders</h3>
+  {confirmedOrders.map((order) => {
+    const item = items.find((item) => item.id === order.itemId) || {};
+
+    return (
+      <div key={order.id}>
+        <p><strong>{item.name}</strong></p>
+        <p>Quantity: {order.quantity}</p>
+        <p>${calculateTotalPrice([order], [item])}</p>
       </div>
-
-      <button onClick={confirmAllOrders}>Confirm All Orders</button>
-
-      <div className="confirmed-orders-container">
-        <h3>Confirmed Orders</h3>
-        {confirmedOrders.map((order) => {
-          const item = items.find((item) => item.id === order.itemId) || {};
-
-          return (
-            <div key={order.id}>
-              <p><strong>{item.name}</strong></p>
-              <p>Quantity: {order.quantity}</p>
-              <p>${calculateTotalPrice([order], [item])}</p>
-            </div>
-          );
-        })}
-      </div>
+    );
+  })}
+</div>
     </>
   );
 };

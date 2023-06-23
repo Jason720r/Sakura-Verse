@@ -18,6 +18,7 @@ export const ItemsList = ({ searchTermState }) => {
   const [totalPrice, setTotalPrice] = useState(0)
   const [tempOrderItems, setTempOrderItems] = useState([])
   const [order, setOrder] = useState({})
+  const navigate = useNavigate();
 
 
   //These lines retrieve the spider_user item from the browser's local storage and parse it as a JSON object. 
@@ -130,6 +131,7 @@ const confirmOrder = () => {
     setConfirmedOrders(() => [])
     setCurrentOrder([])
     setTempOrderItems([]);
+    navigate("/")
   }
 
 

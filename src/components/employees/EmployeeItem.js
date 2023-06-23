@@ -13,6 +13,7 @@ export const ItemForm = () => {
         name: "",
         price: 0,
         categoryId: ""
+        
    })
    const[categories, setCategories] = useState([]);
 
@@ -48,7 +49,7 @@ export const ItemForm = () => {
    })
    .then(response => response.json())
    .then(() => {
-    navigate("/food")
+    navigate("/itemDelete")
    })
 
 
