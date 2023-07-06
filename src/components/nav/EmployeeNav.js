@@ -7,6 +7,7 @@ export const EmployeeNav = () => {
     const navigate = useNavigate()
 
     return (
+        
         <ul className="navbar">
             <li className="navbar__item active">
                 <Link className="navbar__link" to="/food">Item Creation</Link>
@@ -28,5 +29,6 @@ export const EmployeeNav = () => {
                     : ""
             }
         </ul>
+        
     )
 }

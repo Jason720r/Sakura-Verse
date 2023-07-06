@@ -1,7 +1,7 @@
 
 export const ItemSearch = ({ setterFunction }) => {
     return (
-        <div>
+        <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '2rem', marginLeft: '27rem' }}>
         <input 
             onChange={(changeEvent) => {
                 setterFunction(changeEvent.target.value)

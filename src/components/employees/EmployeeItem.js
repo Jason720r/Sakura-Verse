@@ -35,7 +35,8 @@ export const ItemForm = () => {
    const ticketToSendToAPI = {
         name: item.name,
         price: item.price,
-        categoryId: categoryIdInt || null
+        categoryId: categoryIdInt || null,
+        description: item.description
 
    }
     // TODO: Perform the fetch() to POST the object to the API
@@ -58,14 +59,15 @@ export const ItemForm = () => {
 return (
 
     <form className="foodForm">
-        <h2 className="foodForm__title">New Item</h2>
+        <h2 className="foodForm__title custom-description2">New Item</h2>
         <fieldset>
             <div className="form-group">
-                <label htmlFor="name">Name:</label>
+                <label className="custom-description" htmlFor="name">Name:</label>
                 <input
                 required autoFocus
                 type="text"
                 className="form-control"
+                style={{ backgroundColor: 'white' }}
                 value={item.name}
                 onChange={
                     (evt) => {
@@ -79,9 +81,10 @@ return (
         </fieldset>
         <fieldset>
             <div className="form-group">
-                <label htmlFor="price">Price</label>
+                <label className="custom-description" htmlFor="price">Price</label>
                 <input type="number"
                 className="form-control"
+                style={{ backgroundColor: 'white' }}
                 value={item.price}
                 onChange={
                     (evt) => {
@@ -94,9 +97,10 @@ return (
         </fieldset>
         <fieldset>
             <div className="form-group">
-                <label htmlFor="category">Category</label>
+                <label className="custom-description" htmlFor="category">Category</label>
                 <select
                 className="form-control"
+                style={{ backgroundColor: 'white' }}
                 value={item.categoryId}
                 onChange={
                     (evt) => {
@@ -114,9 +118,28 @@ return (
                 </select>
             </div>
         </fieldset>
+        <fieldset>
+            <div className="form-group">
+                <label className="custom-description" htmlFor="name">Description:</label>
+                <input
+                required autoFocus
+                type="text"
+                className="form-control"
+                style={{ backgroundColor: 'white' }}
+                value={item.description}
+                onChange={
+                    (evt) => {
+                        const copy = {...item}
+                        copy.description =evt.target.value
+                        update(copy)
+
+                    }
+                } />
+            </div>
+        </fieldset>
         <button
                 onClick={(clickEvent) => handleSaveButtonClick(clickEvent)}
-                className="btn btn-primary">
+                className=" btn btn-dark-red">
                 Save Item
             </button>
     </form>

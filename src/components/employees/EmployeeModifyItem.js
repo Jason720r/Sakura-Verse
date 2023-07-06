@@ -41,24 +41,24 @@ export const ItemDelete = () => {
 
 
         <div>
-          <h2>Item Editing</h2>
+          <h2 className="custom-description2">Item Editing</h2>
           <table>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Actions</th>
+                <th className="custom-description">ID</th>
+                <th className="custom-description">Name</th>
+                <th className="custom-description">Price</th>
+                <th className="custom-description">Actions</th>
               </tr>
             </thead>
             <tbody>
               {items.map((item) => (
                 <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.name}</td>
-                  <td>{item.price}</td>
+                  <td className="white-text">{item.id}</td>
+                  <td className="white-text">{item.name}</td>
+                  <td className="white-text">{item.price}</td>
                   <td>
-                    <button onClick={() => deleteItem(item.id)}>Delete</button>
+                    <button className="btn btn-dark-red"onClick={() => deleteItem(item.id)}>Delete</button>
                   </td>
                 </tr>
               ))}

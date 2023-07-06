@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
-import { Button } from "bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css"
-
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -30,15 +29,32 @@ export const Login = () => {
       });
   };
 
+  const handleMouseMove = (event) => {
+    const x = event.clientX;
+    const y = event.clientY;
+    setMousePosition({ x, y });
+  };
+
+  useEffect(() => {
+    document.body.style.cursor = "none";
+    document.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      document.body.style.cursor = "default";
+      document.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
   return (
     <main className="container--login">
       <section>
         <form className="form--login custom-form" onSubmit={handleLogin}>
           <h1 id="sakura-verse-heading">The Amazing Sakura-Verse</h1>
-          <fieldset className="text-center" style={{ marginTop: '2rem' }}>
+          <fieldset className="text-center" style={{ marginTop: "2rem" }}>
             <fieldset>
               <input
                 type="email"
+                style={{ backgroundColor: "white" }}
                 value={email}
                 onChange={(evt) => setEmail(evt.target.value)}
                 className="form-control text-center custom-input"
@@ -48,9 +64,8 @@ export const Login = () => {
               />
             </fieldset>
           </fieldset>
-          <fieldset className="text-center" style={{ marginTop: '2rem' }}>
+          <fieldset className="text-center" style={{ marginTop: "2rem" }}>
             <button type="submit" className="btn btn-dark-red">
-                
               Sign in
             </button>
           </fieldset>
@@ -59,6 +74,10 @@ export const Login = () => {
       <section className="link--register">
         <Link to="/register">Not a member yet?</Link>
       </section>
+      <div
+        className="trailing-effect"
+        style={{ left: mousePosition.x, top: mousePosition.y }}
+      ></div>
     </main>
   );
-}
+};

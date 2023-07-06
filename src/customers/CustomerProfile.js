@@ -100,36 +100,36 @@ export const CustomerProfile = () => {
     }
   
     return (
-      <div>
-        <h2>User Profile</h2>
-        <p>
-          <strong>Name:</strong> {currentUser.name}
+      <div className="profile" style={{ marginTop: '2rem', border: '1px solid #b01414' }}>
+        <h1 className="custom-description2">User Profile</h1>
+        <p className="custom-smalltext">
+          <strong>Name:</strong> <span className="white-text">{currentUser.name}</span>
         </p>
-        <p>
-          <strong>Email:</strong> {currentUser.email}
+        <p className="custom-smalltext">
+          <strong>Email:</strong> <span className="white-text">{currentUser.email}</span>
         </p>
-        <p>
-          <strong>About Myself</strong> {currentUser.bio}
+        <p className="custom-smalltext">
+          <strong>About Myself:</strong> <span className="white-text">{currentUser.bio}</span>
         </p>
         <div>
-          <label htmlFor="newName">Edit Name:</label>
+          <label className="custom-smalltext" htmlFor="newName">Edit Name:</label>
           <input
             type="text"
             id="newName"
             value={newName}
             onChange={handleNameChange}
           />
-          <button onClick={updateName}>Update Name</button>
+          <button className="btn btn-dark-red" onClick={updateName}>Update Name</button>
         </div>
       <div>
-        <label htmlFor="newBio">Edit About Myself:</label>
+        <label className="custom-smalltext" htmlFor="newBio">Edit About Myself:</label>
         <input
           type="text"
           id="newBio"
           value={newBio}
           onChange={handleBioChange}
         />
-        <button onClick={updateBio}>Update About Myself</button>
+        <button className="btn btn-dark-red" onClick={updateBio}>Update About Myself</button>
       </div>
     </div>
     );

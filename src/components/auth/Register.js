@@ -57,22 +57,22 @@ export const Register = () => {
     return (
         <main style={{ textAlign: "center" }}>
             <form className="form--login custom-form" onSubmit={handleRegister}>
-                <h1 className="h3 mb-3 font-weight-normal custom-heading">Please Register for the Sakura-Verse</h1>
+                <h1 className="custom-description2">Please Register for the Sakura-Verse</h1>
                 <fieldset>
-                    <label htmlFor="name"> Name </label>
-                    <input onChange={updateCustomer}
+                    <label  className="custom-description" htmlFor="name"> Name </label>
+                    <input style={{ backgroundColor: 'white' }}onChange={updateCustomer}
                            type="text" id="name" className="form-control"
                            placeholder="Add a little Pizzazz" required autoFocus />
                 </fieldset>
                 <fieldset>
-                    <label htmlFor="email"> Email address </label>
-                    <input onChange={updateCustomer}
+                    <label className="custom-description" htmlFor="email"> Email address </label>
+                    <input style={{ backgroundColor: 'white' }} onChange={updateCustomer}
                         type="email" id="email" className="form-control"
                         placeholder="Email address" required />
                 </fieldset>
                 <fieldset>
-                    <label htmlFor="bio"> About you </label>
-                    <input onChange={updateCustomer}
+                    <label className="custom-description" htmlFor="bio"> About you </label>
+                    <input style={{ backgroundColor: 'white' }}onChange={updateCustomer}
                         type="bio" id="bio" className="form-control"
                         placeholder="What kind of spider are you?" required />
                 </fieldset>
@@ -83,7 +83,7 @@ export const Register = () => {
                         setCustomer(copy)
                     }}
                         type="checkbox" id="isStaff" />
-                    <label htmlFor="email"> Universe 616 </label>
+                    <label  className="custom-description"htmlFor="email"> Universe 616 </label>
                 </fieldset>
                 <fieldset>
                     <button type="submit" className="btn btn-dark-red"> Register </button>
